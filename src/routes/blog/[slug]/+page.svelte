@@ -97,14 +97,6 @@
 				{/if}
 			</div>
 			
-			<!-- Debug section to show raw content -->
-			<div class="debug-section">
-				<details>
-					<summary>Debug Raw Content</summary>
-					<pre>{rawContent}</pre>
-				</details>
-			</div>
-			
 			<div class="markdown-content">
 				{#if markdownContent}
 					{@html markdownContent}
@@ -168,21 +160,6 @@
 		background: #222;
 		padding: 0.25rem 0.5rem;
 		border-radius: 4px;
-	}
-	
-	.debug-section {
-		margin-bottom: 1rem;
-		border: 1px dashed #444;
-		padding: 0.5rem;
-	}
-	
-	.debug-section pre {
-		white-space: pre-wrap;
-		word-break: break-word;
-		background: #222;
-		padding: 0.5rem;
-		max-height: 300px;
-		overflow: auto;
 	}
 	
 	.markdown-content {
