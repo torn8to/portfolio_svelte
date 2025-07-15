@@ -1,9 +1,18 @@
-import { ArticleEndPoint } from '$lib/Constants';
+import posts from '$lib/Posts';
 import type { PageLoad } from './$types';
 
-export const load = (async ({ params }) => {
-	let response = await fetch(`${ArticleEndPoint}/${params.slug}`);
-	return {
-		article: response.ok && (await response.json())
-	};
+export const load = (({ params }) => {
+  const slug = params.slug;
+  const post = posts.find(p => p.slug === slug);
+  
+  if (!post) {
+    return {
+      status: 404,
+      error: new Error('Post not found')
+    };
+  }
+  
+  return {
+    post
+  };
 }) satisfies PageLoad;

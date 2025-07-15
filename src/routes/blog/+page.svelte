@@ -1,43 +1,83 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css" integrity="sha384-vKruj+a13U8yHIkAyGgK1J3ArTLzrFGBbBc0tDp4ad/EyewESeXE/Iv67Aj8gKZ0" crossorigin="anonymous">
 <script>
-	export let data;
-	let devToArticles = data.devToArticles;
+	import { onMount } from 'svelte';
+	import MarkdownIt from 'markdown-it';
+	import markdownItKatex from 'markdown-it-katex';
+	import posts from '$lib/Posts';
+	
+	let md;
+	let filteredArticles = posts;
+	let renderedDescriptions = {};
 
-	const blackListedArticles = [422939];
+	// Helper function to handle tags that could be arrays or strings
+	function formatTags(tags) {
+		if (Array.isArray(tags)) {
+			return tags.join(', ');
+		} else if (typeof tags === 'string') {
+			return tags;
+		}
+		return '';
+	}
 
-	const articles = [...devToArticles];
-
-	const filteredArticles = articles.filter((article) => !blackListedArticles.includes(article?.id));
+	onMount(() => {
+		md = new MarkdownIt({
+			html: true,
+			linkify: true,
+			typographer: true
+		});
+		
+		// Add KaTeX support
+		md.use(markdownItKatex);
+		console.log('MarkdownIt initialized with KaTeX for blog index');
+		
+		// Pre-render all descriptions
+		filteredArticles.forEach(article => {
+			if (article.description) {
+				console.log(`Rendering description for ${article.id}:`, article.description);
+				renderedDescriptions[article.id] = md.render(article.description);
+				console.log(`Rendered result for ${article.id}:`, renderedDescriptions[article.id]);
+			}
+		});
+	});
 </script>
 
 <svelte:head>
-	<title>Gianmarco Cavallo — Blog</title>
+	<title>Nathan Rogers — Blog</title>
 </svelte:head>
 
 <div class="articlesContainer">
 	<div class="articles">
 		<h1>Articles</h1>
+		{#if filteredArticles && filteredArticles.length > 0}
+			{#each filteredArticles as article}
+				<div class="article">
+					<div class="header">
+						<h2>
+							{article.title}
+						</h2>
+						<div>Tags: {formatTags(article.tags || article.technologies)}</div>
+					</div>
+					{#if article.description}
+						<div class="markdown-content">
+							{#if renderedDescriptions[article.id]}
+								{@html renderedDescriptions[article.id]}
+							{:else}
+								<p>{article.description}</p>
+							{/if}
+						</div>
+					{:else}
+						<p></p>
+					{/if}
 
-		{#each filteredArticles as article}
-			<div class="article">
-				<div class="header">
-					<h2>
-						{article.title}
-					</h2>
-					<div>Tags: {article.tags || article.category}</div>
+					<a
+						href={article.slug ? `/blog/${article.slug}` : article.link}
+						target={!article.slug ? '_blank' : '_self'}
+					>
+						<div class="button">Read Article =></div>
+					</a>
 				</div>
-				<p>
-					{article.description || ''}
-				</p>
-
-				<a
-					href={article.id ? `/blog/${article.id}` : article.link}
-					target={!article.id ? '_blank' : '_self'}
-				>
-					<div class="button">Read Article =></div>
-				</a>
-			</div>
-		{/each}
-		{#if filteredArticles.length === 0}
+			{/each}
+		{:else}
 			<div>No Articles</div>
 		{/if}
 	</div>
@@ -140,5 +180,61 @@
 		.articles {
 			grid-template-columns: 1fr;
 		}
+	}
+
+	.markdown-content {
+		color: #d0d0d0;
+		line-height: 1.6;
+		margin-bottom: 1.5rem;
+	}
+
+	.markdown-content :global(h1),
+	.markdown-content :global(h2),
+	.markdown-content :global(h3),
+	.markdown-content :global(h4) {
+		color: white;
+		margin-top: 1.5rem;
+		margin-bottom: 0.75rem;
+	}
+
+	.markdown-content :global(p) {
+		margin-bottom: 1rem;
+	}
+
+	.markdown-content :global(ul),
+	.markdown-content :global(ol) {
+		margin-left: 1.5rem;
+		margin-bottom: 1rem;
+	}
+
+	.markdown-content :global(code) {
+		background-color: #222;
+		padding: 0.2rem 0.4rem;
+		border-radius: 3px;
+		font-family: monospace;
+	}
+
+	.markdown-content :global(pre) {
+		background-color: #222;
+		padding: 1rem;
+		border-radius: 5px;
+		overflow-x: auto;
+		margin-bottom: 1rem;
+	}
+
+	.markdown-content :global(a) {
+		color: #4dabf7;
+		text-decoration: underline;
+	}
+	
+	/* KaTeX styling */
+	.markdown-content :global(.katex) {
+		font-size: 1.1em;
+	}
+	
+	.markdown-content :global(.katex-display) {
+		margin: 1.5rem 0;
+		overflow-x: auto;
+		overflow-y: hidden;
 	}
 </style>

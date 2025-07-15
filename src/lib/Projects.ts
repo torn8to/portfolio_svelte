@@ -1,9 +1,10 @@
 const projects = [
 	{
-		title: 'GDLauncher',
-		technologies: ['Node', 'React', 'Redux', 'Electron'],
+		title: 'Sparse Voxel HashMap ICP',
+		technologies: ['cpp', 'tbb', 'ROS2'],
 		description:
-			'GDLauncher is a simple, yet powerful Minecraft custom launcher with a strong focus on the user experience',
+			'Sparse VoxelHasmap is data structuree behind basing the icp algorithim as a way to lookup provide quickest lookup times.  ITs performance drops off when reaching around 800,000 points but when combined \
+			LFU cache based pruning and multithreading with tbb enables it to run 10hz 32 beam lidar sensors seamlessly from a raspberry pi 4',
 		url: 'https://github.com/gorilla-devs/GDLauncher'
 	},
 	{

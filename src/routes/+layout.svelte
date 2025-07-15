@@ -121,7 +121,7 @@
 <slot />
 
 <footer>
-	Created by <a class="me" href="/about">Ladvace</a> ❤️ with
+	Created by <a class="me" href="/about">Nathan Rogers</a> ❤️ with
 	<span class="svelte">Svelte</span>
 </footer>
 
@@ -196,9 +196,7 @@
 	}
 
 	@media (min-width: 900px) {
-		:global(body) {
-			padding: 0 100px;
-		}
+		
 	}
 
 	:global(a) {
