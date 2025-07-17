@@ -8,11 +8,12 @@ const projects = [
 		url: 'https://github.com/gorilla-devs/GDLauncher'
 	},
 	{
-		title: 'WiseMan Discord Bot',
-		technologies: ['NodeJs', 'FireBase', 'MongoDb', 'golang'],
+		title: 'High Frequency Force Matrix Wirelsess Sensor',
+		technologies: ['C++', 'sqlite', 'python'],
 		description:
-			'The wiseMan bot allows you to level up based on the time you spend in a vocal channel',
-		url: 'https://github.com/Ladvace/WiseMan-DiscordBot'
+			'Building a fast wirless connected sensor that allows for easy setup for experiments to measure force applications over about 1000 pads\
+			 leveraging direct memory access based adc reads and double buffering to acheieve a reading and transmission rate of a 200 hz',
+		url: ''
 	},
 	{
 		title: 'Easy-react-carousel',
